@@ -1,25 +1,26 @@
 <script setup lang="ts">
+import { useRoute } from "vue-router";
 import { watch } from "vue";
-// import { useRouter } from "vue-router";
-import { useMovieDetail } from "@/composables/useMovieDetail";
-import { formatDate } from "@/utils/formatDate";
+
 import { formatRating, formatRuntime, formatCurrency } from "@/utils/formatRating";
-import MovieHero from "@/components/movie/MovieHero.vue";
-import MovieMeta from "@/components/movie/MovieMeta.vue";
 import SimilarMoviesSection from "@/components/movie/SimilarMoviesSection.vue";
 import LoadingState from "@/components/common/LoadingState.vue";
+import { useMovieDetail } from "@/composables/useMovieDetail";
 import ErrorState from "@/components/common/ErrorState.vue";
+import MovieHero from "@/components/movie/MovieHero.vue";
+import MovieMeta from "@/components/movie/MovieMeta.vue";
+import { formatDate } from "@/utils/formatDate";
 
 const props = defineProps<{
   id: number;
 }>();
 
-// const router = useRouter()
+const { params } = useRoute();
 const { movie, credits, isLoading, error, fetch } = useMovieDetail();
 
 watch(
-  () => props.id,
-  (id) => fetch(id),
+  () => params.id,
+  (id) => fetch(Number(id)),
   { immediate: true },
 );
 </script>
@@ -27,7 +28,12 @@ watch(
 <template>
   <div>
     <!-- Loading -->
-    <LoadingState v-if="isLoading" message="Loading movie details..." :full-screen="true" />
+    <LoadingState
+      v-if="isLoading"
+      message="Loading movie details..."
+      :full-screen="true"
+      parent-class="mt-24"
+    />
 
     <!-- Error -->
     <ErrorState
@@ -35,6 +41,7 @@ watch(
       :message="error"
       retry-label="Try Again"
       @retry="fetch(props.id)"
+      parent-class="mt-24"
     />
 
     <!-- Content -->
@@ -49,7 +56,7 @@ watch(
           <div class="lg:col-span-2 space-y-10">
             <!-- Overview -->
             <section>
-              <h2 class="text-white font-semibold text-xl mb-3">Overview</h2>
+              <h2 class="text-white font-semibold text-xl mb-3">Synopsis</h2>
               <p class="text-gray-300 leading-relaxed">
                 {{ movie.overview || "No overview available." }}
               </p>
@@ -71,12 +78,8 @@ watch(
               <div class="space-y-3 text-sm">
                 <div class="flex justify-between">
                   <span class="text-gray-500">Rating</span>
-                  <span class="text-primary font-bold flex items-center gap-1">
-                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                      />
-                    </svg>
+                  <span class="text-amber-300 font-bold flex items-center gap-1">
+                    <v-icon name="md-star-round" class="w-3.5 h-3.5" />
                     {{ formatRating(movie.vote_average) }}
                     <span class="text-gray-500 font-normal"
                       >({{ movie.vote_count.toLocaleString() }})</span

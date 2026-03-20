@@ -45,7 +45,7 @@ useIntersectionObserver(sentinel, ([entry]) => {
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10 space-y-8">
     <!-- Header -->
     <div class="space-y-1">
       <h1 class="text-2xl font-bold text-white">Search Movies</h1>

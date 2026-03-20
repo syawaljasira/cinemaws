@@ -1,15 +1,16 @@
 import "./assets/main.css";
 
 // import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import { MdArrowforwardRound } from "oh-vue-icons/icons";
-import { OhVueIcon, addIcons } from "oh-vue-icons";
+
+import { OhVueIcon } from "oh-vue-icons";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
 
-import App from "./App.vue";
+import useIcons from "./composables/addIcons.ts";
 import router from "./router";
+import App from "./App.vue";
 
-addIcons(MdArrowforwardRound);
+useIcons();
 
 const app = createApp(App);
 const pinia = createPinia();
