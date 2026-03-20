@@ -15,7 +15,7 @@ defineProps<{
     class="inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
     :class="[
       variant === 'primary' || !variant
-        ? 'bg-primary text-gray-900 hover:bg-yellow-300 focus:ring-primary'
+        ? 'bg-primary text-gray-900 hover:bg-primary-light focus:ring-primary'
         : variant === 'secondary'
           ? 'bg-gray-700 text-white hover:bg-gray-600 focus:ring-gray-500'
           : variant === 'ghost'

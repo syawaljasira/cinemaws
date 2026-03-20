@@ -2,6 +2,7 @@
 defineProps<{
   message?: string;
   retryLabel?: string;
+  parentClass?: string;
 }>();
 
 defineEmits<{
@@ -10,7 +11,10 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center gap-4 py-16 text-center">
+  <div
+    class="flex flex-col items-center justify-center gap-4 py-16 text-center"
+    :class="parentClass"
+  >
     <div class="w-14 h-14 rounded-full bg-red-500/10 flex items-center justify-center">
       <svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path
@@ -27,7 +31,7 @@ defineEmits<{
     </div>
     <button
       v-if="$attrs.onRetry"
-      class="px-4 py-2 text-sm bg-primary text-gray-900 font-medium rounded-lg hover:bg-yellow-300 transition"
+      class="px-4 py-2 text-sm bg-primary text-gray-900 font-medium rounded-lg hover:bg-primary-light transition"
       @click="$emit('retry')"
     >
       {{ retryLabel ?? "Try Again" }}

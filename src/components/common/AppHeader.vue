@@ -12,19 +12,18 @@ const mobileMenuOpen = ref(false);
 
 const navLinks = [
   { name: "Home", to: "/" },
-  { name: "Search", to: "/search" },
   { name: "Watchlist", to: "/watchlist" },
 ];
 </script>
 
 <template>
   <header class="w-full fixed top-4 z-50 px-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 glass">
+    <div class="max-w-7xl mx-auto px-4 lg:px-6 glass">
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <RouterLink
           to="/"
-          class="flex items-center gap-2 text-primary font-bold text-xl tracking-tight hover:text-primary-300 transition"
+          class="flex items-center gap-2 text-primary font-bold text-xl tracking-tight hover:text-primary-300 transition pr-12"
         >
           <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
             <path
@@ -59,35 +58,29 @@ const navLinks = [
         </nav>
 
         <!-- Right actions -->
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-4">
+          <!-- Search bar -->
+          <div class="relative w-72">
+            <div
+              class="w-full bg-gray-800 text-gray-500 border border-gray-700 rounded-xl pl-3 pr-12 py-2 text-sm cursor-pointer hover:border-primary/50 transition"
+            >
+              Search movies...
+            </div>
+
+            <v-icon
+              name="md-search-round"
+              class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 pointer-events-none"
+            />
+          </div>
+
           <!-- Theme toggle -->
           <button
-            class="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition"
+            class="p-1 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition"
             :title="themeStore.isDark ? 'Switch to light mode' : 'Switch to dark mode'"
             @click="themeStore.toggle()"
           >
-            <svg
-              v-if="themeStore.isDark"
-              class="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-              />
-            </svg>
-            <svg v-else class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-              />
-            </svg>
+            <v-icon name="md-lightmode-outlined" v-if="themeStore.isDark" class="w-5 h-5" />
+            <v-icon name="md-darkmode-outlined" v-else class="w-5 h-5" />
           </button>
 
           <!-- Mobile menu toggle -->

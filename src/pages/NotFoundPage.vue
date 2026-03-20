@@ -59,7 +59,7 @@ onUnmounted(() => clearInterval(timer));
       <div class="flex items-center justify-center gap-3 pt-2">
         <RouterLink
           :to="{ name: 'home' }"
-          class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-gray-900 font-semibold text-sm rounded-lg hover:bg-yellow-300 transition"
+          class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-gray-900 font-semibold text-sm rounded-lg hover:bg-primary-light transition"
         >
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path

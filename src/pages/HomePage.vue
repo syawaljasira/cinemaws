@@ -135,20 +135,18 @@ onMounted(() => {
   fetchGenres();
   fetchTabMovies(true);
 });
-
-console.log(featuredMovie.value);
 </script>
 
 <template>
   <div>
     <!-- ── Hero ── -->
-    <section v-if="featuredMovie" class="relative h-[78vh] min-h-120 flex items-end">
+    <section v-if="featuredMovie" class="relative h-[86vh] min-h-120 flex items-end">
       <div class="absolute inset-0 overflow-hidden">
         <img
           v-if="!heroImageError"
           :src="getBackdropUrl(featuredMovie.backdrop_path, 'original')"
           :alt="featuredMovie.title"
-          class="w-full h-full object-cover"
+          class="w-full h-full object-cover object-center"
           @error="heroImageError = true"
         />
         <div class="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-950/35 to-gray-950/10" />
@@ -177,12 +175,8 @@ console.log(featuredMovie.value);
             <h1 class="text-3xl sm:text-4xl font-bold text-white leading-tight">
               {{ featuredMovie.title }}
             </h1>
-            <div class="flex items-center gap-2 text-sm text-primary font-semibold">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                />
-              </svg>
+            <div class="flex items-center gap-2 text-sm text-amber-300 font-semibold">
+              <v-icon name="md-star-round" class="w-4 h-4" />
               {{ formatRating(featuredMovie.vote_average) }}
             </div>
             <p class="text-gray-300 text-sm leading-relaxed line-clamp-2 max-w-xl">
@@ -191,16 +185,9 @@ console.log(featuredMovie.value);
             <div class="flex items-center gap-3 pt-1">
               <RouterLink
                 :to="{ name: 'movie', params: { id: featuredMovie.id } }"
-                class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-gray-900 font-semibold text-sm rounded-lg hover:bg-yellow-300 transition"
+                class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-gray-900 font-semibold text-sm rounded-lg hover:bg-primary-light transition"
               >
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+                <v-icon name="md-infooutline-round" class="w-5 h-5"> </v-icon>
                 View Details
               </RouterLink>
               <WatchlistButton :movie="featuredMovie" />
@@ -212,30 +199,6 @@ console.log(featuredMovie.value);
 
     <!-- ── Main content ── -->
     <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      <!-- Search bar shortcut -->
-      <RouterLink :to="{ name: 'search' }" class="block" tabindex="-1">
-        <div class="relative w-full max-w-xl">
-          <svg
-            class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 pointer-events-none"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-          <div
-            class="w-full bg-gray-800 text-gray-500 border border-gray-700 rounded-xl pl-12 pr-4 py-3 text-sm cursor-pointer hover:border-primary/50 transition"
-          >
-            Search movies...
-          </div>
-        </div>
-      </RouterLink>
-
       <!-- Tabs -->
       <div
         class="flex items-center gap-1 border-b border-gray-800 overflow-x-auto scrollbar-hide pb-px"

@@ -20,7 +20,7 @@ function handleClear() {
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10 space-y-8">
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div class="space-y-1">
@@ -60,7 +60,7 @@ function handleClear() {
     >
       <RouterLink
         :to="{ name: 'home' }"
-        class="mt-2 inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-gray-900 font-semibold text-sm rounded-lg hover:bg-yellow-300 transition"
+        class="mt-2 inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-gray-900 font-semibold text-sm rounded-lg hover:bg-primary-light transition"
       >
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path
