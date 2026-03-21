@@ -19,3 +19,7 @@
   --color-secondary-dark: oklch(0.52 0.16 260);
   --color-midnight: oklch(0.25 0.09 280);
 }
+
+button {
+  cursor: pointer;
+}

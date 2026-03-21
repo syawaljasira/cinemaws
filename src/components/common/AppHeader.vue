@@ -1,19 +1,33 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useThemeStore } from "@/stores/theme";
 import { useWatchlistStore } from "@/stores/watchlist";
+import { useSearchStore } from "@/stores/search.ts";
+import { useImageUrl } from "@/composables/useImageUrl.ts";
+import LoadingState from "./LoadingState.vue";
+import EmptyState from "./EmptyState.vue";
 
 const route = useRoute();
+const router = useRouter();
 const themeStore = useThemeStore();
 const watchlistStore = useWatchlistStore();
+const searchStore = useSearchStore();
+const { getPosterUrl } = useImageUrl();
 
-const mobileMenuOpen = ref(false);
+const mobileMenuOpen = ref<boolean>(false);
+
+// Sync input → URL query param
 
 const navLinks = [
   { name: "Home", to: "/" },
   { name: "Watchlist", to: "/watchlist" },
 ];
+
+function handleNavigate(e: MouseEvent, id: string | number) {
+  searchStore.setFocus(false);
+  router.push({ name: "movie", params: { id } });
+}
 </script>
 
 <template>
@@ -58,20 +72,113 @@ const navLinks = [
         </nav>
 
         <!-- Right actions -->
-        <div class="flex items-center gap-4">
+        <div class="relative flex items-center gap-4">
           <!-- Search bar -->
-          <div class="relative w-72">
+          <form @submit.prevent="searchStore.handleSearch" class="relative w-72">
             <div
-              class="w-full bg-gray-800 text-gray-500 border border-gray-700 rounded-xl pl-3 pr-12 py-2 text-sm cursor-pointer hover:border-primary/50 transition"
+              class="relative z-50 flex bg-gray-800 text-gray-500 border rounded-xl pl-3 pr-3 py-2"
+              :class="[
+                searchStore.isFocus
+                  ? 'shadow-lg shadow-primary-light/40 border-primary-dark'
+                  : 'border-gray-700',
+              ]"
             >
-              Search movies...
-            </div>
+              <input
+                class="w-56 text-sm hover:border-primary/50 transition focus:outline-1 focus:outline-none"
+                :class="[searchStore.isFocus ? 'absolute' : 'relative']"
+                type="text"
+                v-model="searchStore.search"
+                placeholder="Search movies..."
+                @focus="searchStore.setFocus(true)"
+              />
 
-            <v-icon
-              name="md-search-round"
-              class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 pointer-events-none"
-            />
-          </div>
+              <div class="relative ml-auto h-5">
+                <Transition name="fade1">
+                  <v-icon
+                    v-if="!searchStore.search"
+                    name="md-search-round"
+                    class="w-5 h-5 text-gray-500"
+                  />
+                </Transition>
+
+                <Transition name="fade2">
+                  <button
+                    v-if="searchStore.search"
+                    @click="searchStore.clear"
+                    type="button"
+                    class="text-gray-500 hover:text-gray-300 hover:bg-gray-700 rounded-lg transition"
+                  >
+                    <v-icon name="md-close-round" class="w-5 h-5" />
+                  </button>
+                </Transition>
+              </div>
+
+              <div
+                v-if="searchStore.isFocus && searchStore.search"
+                class="absolute top-10 left-0 w-full h-auto flex flex-col gap-1 bg-gray-800 rounded-xl shadow-lg shadow-primary-light/40 border border-primary-dark"
+              >
+                <!-- View all -->
+                <button
+                  type="button"
+                  @click="searchStore.handleSearch"
+                  class="inline-flex items-center gap-1.5 text-base text-gray-400 font-medium leading-none hover:bg-gray-700 p-3 rounded-xl transition"
+                >
+                  <v-icon name="md-search-round" class="w-5 h-5" />
+                  {{ searchStore.search }}
+                </button>
+
+                <!-- Results -->
+                <div
+                  v-if="searchStore.suggestions?.length > 0 && !searchStore.isLoading"
+                  class="flex flex-col gap-1"
+                >
+                  <button
+                    type="button"
+                    v-for="movie in searchStore.suggestions"
+                    :key="movie?.id"
+                    class="flex items-center gap-3 w-full p-3 text-left hover:bg-gray-700 transition-colors rounded-xl cursor-pointer"
+                    @click.capture="(e) => handleNavigate(e, movie?.id)"
+                  >
+                    <!-- Poster mini -->
+                    <img
+                      v-if="movie?.poster_path"
+                      :src="getPosterUrl(movie?.poster_path, 'w92')"
+                      :alt="movie?.title"
+                      class="w-10 h-12 rounded object-cover shrink-0"
+                    />
+                    <div
+                      v-else
+                      class="w-10 h-14 rounded bg-gray-700 flex items-center justify-center shrink-0"
+                    >
+                      <span class="text-xs text-gray-400">N/A</span>
+                    </div>
+                    <!-- Info -->
+                    <div class="min-w-0">
+                      <p class="text-sm text-white font-medium truncate">
+                        {{ movie?.title }}
+                      </p>
+                      <p class="text-xs text-gray-400">
+                        {{ movie?.release_date?.slice(0, 4) || "Unknown" }}
+                        <span v-if="movie?.vote_average" class="ml-2 text-yellow-400">
+                          ★ {{ movie?.vote_average.toFixed(1) }}
+                        </span>
+                      </p>
+                    </div>
+                  </button>
+                </div>
+                <LoadingState v-if="searchStore.isLoading" message="Searching..." />
+                <EmptyState
+                  v-else-if="
+                    searchStore.isEmpty && !searchStore.isLoading && !searchStore.suggestions.length
+                  "
+                  class="px-3 pt-0 pb-10"
+                  icon="search"
+                  title="No results found"
+                  :description="`We couldn't find anything for '${searchStore.search}'. Try a different keyword.`"
+                />
+              </div>
+            </div>
+          </form>
 
           <!-- Theme toggle -->
           <button
@@ -146,7 +253,7 @@ const navLinks = [
   </header>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .glass {
   background: rgba(5, 12, 30, 0.8);
   border-radius: 16px;
@@ -154,5 +261,21 @@ const navLinks = [
   backdrop-filter: blur(5.3px);
   -webkit-backdrop-filter: blur(5.3px);
   border: 1px solid rgba(3, 7, 18, 0.34);
+}
+
+.fade1-enter-active,
+.fade1-leave-active,
+.fade2-enter-active,
+.fade2-leave-active {
+  transition: all 0.2s ease-in;
+}
+.fade1-enter-from,
+.fade1-leave-to,
+.fade2-enter-from,
+.fade2-leave-to {
+  opacity: 0;
+  scale: 0.8;
+  position: absolute;
+  left: 0;
 }
 </style>

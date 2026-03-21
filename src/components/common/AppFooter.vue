@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const year = new Date(Date.now()).getFullYear();
+</script>
 
 <template>
   <footer class="border-t border-gray-800 bg-gray-900 mt-auto">
@@ -7,8 +9,9 @@
         class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500"
       >
         <div class="flex items-center gap-2">
-          <span class="text-primary font-bold text-base">Cinemaws</span>
-          <span>— Built with Vue 3 + TMDB API</span>
+          <v-icon name="md-copyright-round" class="w-5 h-5 text-gray-500" />
+          <span class="font-semibold text-base leading-0">{{ year }}, Cinemaws</span>
+          <!-- <span>— Built with Vue 3 + TMDB API</span> -->
         </div>
         <p>
           Movie data provided by

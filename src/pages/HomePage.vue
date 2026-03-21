@@ -140,7 +140,7 @@ onMounted(() => {
 <template>
   <div>
     <!-- ── Hero ── -->
-    <section v-if="featuredMovie" class="relative h-[86vh] min-h-120 flex items-end">
+    <section v-if="featuredMovie" class="relative h-[94vh] min-h-120 flex items-end">
       <div class="absolute inset-0 overflow-hidden">
         <img
           v-if="!heroImageError"
@@ -206,7 +206,7 @@ onMounted(() => {
         <button
           v-for="tab in tabs"
           :key="tab.value"
-          class="relative px-4 py-2.5 text-sm font-medium whitespace-nowrap transition-colors shrink-0"
+          class="relative px-4 py-2.5 text-sm font-medium whitespace-nowrap transition-colors shrink-0 cursor-pointer"
           :class="
             activeTab === tab.value && !showingGenre
               ? 'text-primary'

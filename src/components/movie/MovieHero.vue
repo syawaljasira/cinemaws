@@ -13,7 +13,7 @@ const { getBackdropUrl } = useImageUrl();
 </script>
 
 <template>
-  <section class="relative h-[86vh] min-h-120 flex items-end">
+  <section class="relative h-[94vh] min-h-120 flex items-end">
     <!-- Backdrop -->
     <div class="absolute inset-0 overflow-hidden">
       <img
