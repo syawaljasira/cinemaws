@@ -8,6 +8,9 @@ import {
   MdBookmarkaddedRound,
   MdInfooutlineRound,
   MdStarRound,
+  MdLocalmoviesRound,
+  MdCloseRound,
+  MdCopyrightRound,
 } from "oh-vue-icons/icons";
 
 const useIcons = () => {
@@ -20,6 +23,9 @@ const useIcons = () => {
     MdBookmarkaddedRound,
     MdInfooutlineRound,
     MdStarRound,
+    MdLocalmoviesRound,
+    MdCloseRound,
+    MdCopyrightRound,
   );
 };
 
