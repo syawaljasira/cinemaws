@@ -3,13 +3,15 @@ const year = new Date(Date.now()).getFullYear();
 </script>
 
 <template>
-  <footer class="border-t border-gray-800 bg-gray-900 mt-auto">
+  <footer
+    class="border-t border-primary/50 bg-primary/20 dark:border-gray-800 dark:bg-gray-900 mt-auto"
+  >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div
-        class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500"
+        class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-700 dark:text-gray-500"
       >
         <div class="flex items-center gap-2">
-          <v-icon name="md-copyright-round" class="w-5 h-5 text-gray-500" />
+          <v-icon name="md-copyright-round" class="w-5 h-5 text-gray-700 dark:text-gray-500" />
           <span class="font-semibold text-base leading-0">{{ year }}, Cinemaws</span>
           <!-- <span>— Built with Vue 3 + TMDB API</span> -->
         </div>
@@ -19,7 +21,7 @@ const year = new Date(Date.now()).getFullYear();
             href="https://www.themoviedb.org"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-gray-400 hover:text-primary transition underline underline-offset-2"
+            class="text-gray-500 dark:text-gray-400 hover:text-primary-dark dark:hover:text-primary transition underline underline-offset-2"
           >
             TMDB
           </a>

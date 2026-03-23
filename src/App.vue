@@ -8,7 +8,7 @@ const searchStore = useSearchStore();
 </script>
 
 <template>
-  <div class="relative min-h-screen bg-gray-950 text-white flex flex-col">
+  <div class="relative min-h-screen bg-slate-100 dark:bg-gray-950 text-white flex flex-col">
     <!-- Backdrop gelap -->
     <Transition name="fade" mode="out-in">
       <div

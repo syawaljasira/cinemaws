@@ -26,8 +26,10 @@ defineEmits<{
       </svg>
     </div>
     <div>
-      <p class="text-white font-medium">Something went wrong</p>
-      <p class="text-gray-400 text-sm mt-1">{{ message ?? "An unexpected error occurred." }}</p>
+      <p class="text-gray-700 dark:text-white font-medium">Something went wrong</p>
+      <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">
+        {{ message ?? "An unexpected error occurred." }}
+      </p>
     </div>
     <button
       v-if="$attrs.onRetry"

@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { useImageUrl } from "@/composables/useImageUrl";
 import type { MovieDetail, Credits } from "@/types/movie";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{
   movie: MovieDetail;
@@ -9,8 +10,18 @@ const props = defineProps<{
 }>();
 
 const { getAvatarUrl } = useImageUrl();
+const router = useRouter();
 
 const topCast = computed(() => props.credits?.cast.slice(0, 8) ?? []);
+
+const handleCast = (value: string) => {
+  router.push({
+    name: "search",
+    query: {
+      cast: value,
+    },
+  });
+};
 </script>
 
 <template>
@@ -24,13 +35,17 @@ const topCast = computed(() => props.credits?.cast.slice(0, 8) ?? []);
           :key="actor.id"
           class="w-full flex flex-col items-center text-center gap-2"
         >
-          <div class="w-20 h-20 rounded-full overflow-hidden bg-gray-800 shrink-0">
+          <button
+            type="button"
+            class="w-20 h-20 rounded-full overflow-hidden bg-gray-800 shrink-0"
+            @click="handleCast(actor.name)"
+          >
             <img
               :src="getAvatarUrl(actor.profile_path)"
               :alt="actor.name"
               class="w-full h-full object-cover"
             />
-          </div>
+          </button>
           <div>
             <p class="text-white text-xs font-medium line-clamp-1">{{ actor.name }}</p>
             <p class="text-gray-500 text-xs line-clamp-1">{{ actor.character }}</p>

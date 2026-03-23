@@ -3,7 +3,8 @@ import { useDebounceFn } from "@vueuse/core";
 import { defineStore } from "pinia";
 import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { movieService } from "@/services/movieService.ts";
+import { useSearchMovies } from "@/composables/useSearchMovies.ts";
+import { useSearchCast } from "@/composables/useSearchCast.ts";
 
 export const useSearchStore = defineStore(
   "search",
@@ -13,38 +14,38 @@ export const useSearchStore = defineStore(
 
     const search = ref<string>("");
     const isFocus = ref<boolean>(false);
-    const suggestions = ref<Movie[]>([]);
-    const isLoading = ref(false);
-    const isEmpty = ref(false);
 
-    const fetchSuggestions = useDebounceFn(async (keyword: string) => {
-      if (!keyword.trim()) {
-        suggestions.value = [];
-        return;
-      }
+    const {
+      query: movieQuery,
+      results: movieResults,
+      isLoading: isMovieLoading,
+      debouncedSearch: debouncedSearchMovies,
+    } = useSearchMovies();
+    const {
+      query: castQuery,
+      cast: castResults,
+      isLoading: isCastLoading,
+      debouncedSearch: debouncedSearchCast,
+    } = useSearchCast();
 
-      isLoading.value = true;
-
-      try {
-        const { data } = await movieService.searchMovies(keyword);
-        suggestions.value = data.results.slice(0, 5); // batasi 6 hasil
-      } catch {
-        suggestions.value = [];
-      } finally {
-        isLoading.value = false;
-
-        if (!suggestions.value?.length) {
-          isEmpty.value = true;
-        } else {
-          isEmpty.value = false;
-        }
-      }
-    }, 400);
-
-    // otomatis fetch saat query berubah
+    // ─── Sync search → query masing-masing composable ─────────────────────────
     watch(search, (val) => {
-      fetchSuggestions(val);
+      movieQuery.value = val;
+      castQuery.value = val;
+      debouncedSearchMovies();
+      debouncedSearchCast();
     });
+
+    const movieSuggestions = computed(() => movieResults.value.slice(0, 4));
+    const castSuggestions = computed(() => castResults.value.slice(0, 2));
+
+    const isMovieEmpty = computed(
+      () => !isMovieLoading.value && movieSuggestions.value.length === 0 && !!search.value.trim(),
+    );
+
+    const isCastEmpty = computed(
+      () => !isCastLoading.value && castSuggestions.value.length === 0 && !!search.value.trim(),
+    );
 
     function handleSearch() {
       isFocus.value = false;
@@ -79,9 +80,12 @@ export const useSearchStore = defineStore(
       handleSearch,
       isFocus,
       setFocus,
-      suggestions,
-      isLoading,
-      isEmpty,
+      movieSuggestions,
+      castSuggestions,
+      isCastLoading,
+      isMovieLoading,
+      isMovieEmpty,
+      isCastEmpty,
     };
   },
   //   { persist: true } // requires pinia-plugin-persistedstate

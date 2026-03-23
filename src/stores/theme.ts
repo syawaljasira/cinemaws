@@ -1,10 +1,8 @@
 import { defineStore } from "pinia";
 import { ref, watch } from "vue";
-import { usePreferredDark } from "@vueuse/core";
 
 export const useThemeStore = defineStore("theme", () => {
-  const prefersDark = usePreferredDark();
-  const isDark = ref(prefersDark.value);
+  const isDark = ref(true);
 
   function toggle() {
     isDark.value = !isDark.value;

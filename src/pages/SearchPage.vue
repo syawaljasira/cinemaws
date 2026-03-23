@@ -6,21 +6,38 @@ import { useIntersectionObserver } from "@vueuse/core";
 import MovieGrid from "@/components/movie/MovieGrid.vue";
 import EmptyState from "@/components/common/EmptyState.vue";
 import LoadingState from "@/components/common/LoadingState.vue";
+import { useImageUrl } from "@/composables/useImageUrl.ts";
 
 const route = useRoute();
 const router = useRouter();
+const { getAvatarUrl } = useImageUrl();
 
-const { query, results, totalPages, page, isLoading, error, debouncedSearch, loadMore } =
-  useSearchMovies();
+const {
+  query,
+  results,
+  cast: castDetails,
+  totalPages,
+  page,
+  isLoading,
+  error,
+  debouncedSearch,
+  loadMore,
+} = useSearchMovies();
 
 const hasMore = () => page.value < totalPages.value;
 const hasSearched = ref(false);
+const q = route.query.q as string;
+const cast = route.query.cast as string;
 
 // Sync query param → search
 onMounted(() => {
-  const q = route.query.q as string;
   if (q) {
     query.value = q;
+    hasSearched.value = true;
+    debouncedSearch();
+  }
+  if (cast) {
+    query.value = cast;
     hasSearched.value = true;
     debouncedSearch();
   }
@@ -28,7 +45,11 @@ onMounted(() => {
 
 // Sync input → URL query param
 watch(query, (val) => {
-  router.replace({ name: "search", query: val ? { q: val } : {} });
+  if (cast) {
+    router.replace({ name: "search", query: val ? { cast: val } : {} });
+  } else {
+    router.replace({ name: "search", query: val ? { q: val } : {} });
+  }
   hasSearched.value = !!val.trim();
   debouncedSearch();
 });
@@ -49,6 +70,20 @@ useIntersectionObserver(sentinel, ([entry]) => {
     <div class="space-y-1">
       <h1 class="text-2xl font-bold text-white">Search Movies</h1>
       <p class="text-gray-500 text-sm">Find any movie from millions in the TMDB database</p>
+    </div>
+
+    <div
+      v-if="!isLoading && results.length && castDetails !== null && cast"
+      class="inline-flex flex-col items-center gap-2"
+    >
+      <div type="button" class="w-24 h-24 rounded-full overflow-hidden bg-gray-800 shrink-0">
+        <img
+          :src="getAvatarUrl(castDetails.profile_path)"
+          :alt="castDetails.name"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <p class="text-white text-base font-medium line-clamp-1">{{ castDetails.name }}</p>
     </div>
 
     <!-- Results count -->

@@ -6,6 +6,7 @@ import type {
   Credits,
   PaginatedResponse,
   MovieListType,
+  Person,
 } from "@/types/movie";
 
 export const movieService = {
@@ -27,6 +28,12 @@ export const movieService = {
 
   searchMovies(query: string, page = 1) {
     return api.get<PaginatedResponse<Movie>>("/search/movie", {
+      params: { query, page, include_adult: false },
+    });
+  },
+
+  searchCast(query: string, page = 1) {
+    return api.get<PaginatedResponse<Person>>("/search/person", {
       params: { query, page, include_adult: false },
     });
   },

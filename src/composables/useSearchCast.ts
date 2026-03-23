@@ -1,15 +1,11 @@
 import { ref } from "vue";
 import { useDebounceFn } from "@vueuse/core";
 import { movieService } from "@/services/movieService";
-import type { Movie, Person } from "@/types/movie";
-import { useRoute } from "vue-router";
+import type { Person } from "@/types/movie";
 
-export function useSearchMovies() {
-  const route = useRoute();
-
-  const results = ref<Movie[]>([]);
+export function useSearchCast() {
   const query = ref("");
-  const cast = ref<Person | null>(null);
+  const cast = ref<Person[]>([]);
   const page = ref(1);
   const totalPages = ref(1);
   const isLoading = ref(false);
@@ -17,34 +13,23 @@ export function useSearchMovies() {
 
   async function search(reset = true) {
     if (!query.value.trim()) {
-      results.value = [];
+      cast.value = [];
       return;
     }
 
     if (reset) {
       page.value = 1;
-      results.value = [];
+      cast.value = [];
     }
 
     isLoading.value = true;
     error.value = null;
 
     try {
-      const isCastQuery = route.query.cast as string;
+      const { data } = await movieService.searchCast(query.value, page.value);
 
-      if (isCastQuery) {
-        const { data } = await movieService.searchCast(query.value, page.value);
-        const movies: Movie[] = data.results[0]?.known_for as Movie[];
-
-        cast.value = data.results[0] as Person;
-        results.value = reset ? (movies ?? []) : [...results.value, ...movies];
-        totalPages.value = data.total_pages;
-      } else {
-        const { data } = await movieService.searchMovies(query.value, page.value);
-
-        results.value = reset ? data.results : [...results.value, ...data.results];
-        totalPages.value = data.total_pages;
-      }
+      cast.value = reset ? data.results : [...cast.value, ...data.results];
+      totalPages.value = data.total_pages;
     } catch (e) {
       error.value = e instanceof Error ? e.message : "Search failed";
     } finally {
@@ -62,7 +47,6 @@ export function useSearchMovies() {
 
   return {
     query,
-    results,
     cast,
     page,
     totalPages,
