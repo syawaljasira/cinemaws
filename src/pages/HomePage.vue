@@ -26,7 +26,6 @@ async function fetchFeatured() {
     const movies = data.results.filter((m) => m.backdrop_path);
     const randomIndex = Math.floor(Math.random() * Math.min(movies.length, 10));
     featuredMovie.value = movies[randomIndex] || null;
-    console.log("Featured movie:", featuredMovie.value);
   } catch {
     featuredMovie.value = null;
   }
@@ -57,7 +56,9 @@ async function fetchByGenre(reset = true) {
     genrePage.value = 1;
     genreMovies.value = [];
   }
+
   genreLoading.value = true;
+
   try {
     const { data } = await movieService.getMoviesByGenre(selectedGenre.value, genrePage.value);
     genreMovies.value = reset ? data.results : [...genreMovies.value, ...data.results];

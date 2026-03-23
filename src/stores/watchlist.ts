@@ -31,5 +31,5 @@ export const useWatchlistStore = defineStore(
 
     return { items, count, isInWatchlist, add, remove, toggle, clear };
   },
-  //   { persist: true } // requires pinia-plugin-persistedstate
+  { persist: true },
 );
