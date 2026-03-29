@@ -12,7 +12,6 @@ import MovieGrid from "@/components/movie/MovieGrid.vue";
 import GenreFilter from "@/components/movie/GenreFilter.vue";
 import WatchlistButton from "@/components/movie/WatchlistButton.vue";
 import type { Movie, MovieListType } from "@/types/movie";
-// import SearchBar from "@/components/movie/SearchBar.vue";
 
 const { getBackdropUrl, getPosterUrl } = useImageUrl();
 
@@ -150,7 +149,9 @@ onMounted(() => {
           class="w-full h-full object-cover object-center"
           @error="heroImageError = true"
         />
-        <div class="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-950/35 to-gray-950/10" />
+        <div
+          class="absolute inset-0 bg-linear-to-t from-gray-200/40 to-gray-200/10 dark:from-gray-950 dark:via-gray-950/35 dark:to-gray-950/10"
+        />
         <div
           class="absolute inset-0 bg-linear-to-r from-gray-950/60 via-gray-950/25 to-transparent"
         />
@@ -169,7 +170,7 @@ onMounted(() => {
               <span class="text-xs bg-primary text-gray-900 font-bold px-2 py-0.5 rounded"
                 >FEATURED</span
               >
-              <span class="text-gray-400 text-sm">{{
+              <span class="text-gray-300 dark:text-gray-400 text-sm">{{
                 formatYear(featuredMovie.release_date)
               }}</span>
             </div>
@@ -180,7 +181,9 @@ onMounted(() => {
               <v-icon name="md-star-round" class="w-4 h-4" />
               {{ formatRating(featuredMovie.vote_average) }}
             </div>
-            <p class="text-gray-300 text-sm leading-relaxed line-clamp-2 max-w-xl">
+            <p
+              class="text-gray-200 dark:text-gray-300 text-sm leading-relaxed line-clamp-2 max-w-xl"
+            >
               {{ featuredMovie.overview }}
             </p>
             <div class="flex items-center gap-3 pt-1">
@@ -202,7 +205,7 @@ onMounted(() => {
     <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       <!-- Tabs -->
       <div
-        class="flex items-center gap-1 border-b border-gray-800 overflow-x-auto scrollbar-hide pb-px"
+        class="flex items-center gap-1 border-b border-gray-300 dark:border-gray-800 overflow-x-auto scrollbar-hide pb-px"
       >
         <button
           v-for="tab in tabs"
@@ -210,8 +213,8 @@ onMounted(() => {
           class="relative px-4 py-2.5 text-sm font-medium whitespace-nowrap transition-colors shrink-0 cursor-pointer"
           :class="
             activeTab === tab.value && !showingGenre
-              ? 'text-primary'
-              : 'text-gray-500 hover:text-gray-300'
+              ? 'text-primary-dark dark:text-primary'
+              : 'text-gray-600 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-300'
           "
           @click="activeTab = tab.value"
         >
@@ -225,7 +228,9 @@ onMounted(() => {
 
       <!-- Genre filter -->
       <div>
-        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">
+        <h3
+          class="text-xs font-semibold text-gray-700 dark:text-gray-500 uppercase tracking-widest mb-3"
+        >
           Browse by Genre
         </h3>
         <GenreFilter :genres="genres" :selected="selectedGenre" @select="onGenreSelect" />
@@ -238,7 +243,10 @@ onMounted(() => {
       />
 
       <!-- Error -->
-      <div v-if="tabError && !showingGenre" class="text-center py-8 text-red-400 text-sm">
+      <div
+        v-if="tabError && !showingGenre"
+        class="text-center py-8 text-red-600 darktext-red-400 text-sm"
+      >
         {{ tabError }}
       </div>
 

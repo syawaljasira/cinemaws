@@ -21,7 +21,10 @@ const { getBackdropUrl } = useImageUrl();
         :alt="movie.title"
         class="w-full h-full object-cover"
       />
-      <div class="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-950/35 to-transparent" />
+
+      <div
+        class="absolute inset-0 bg-linear-to-t from-gray-200/40 to-gray-200/10 dark:from-gray-950 dark:via-gray-950/35 dark:to-gray-950/10"
+      />
       <div
         class="absolute inset-0 bg-linear-to-r from-gray-950/70 via-gray-950/20 to-transparent"
       />
@@ -41,7 +44,7 @@ const { getBackdropUrl } = useImageUrl();
         </h1>
 
         <!-- Meta row -->
-        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-400">
+        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-300 dark:text-gray-400">
           <span class="flex items-center gap-1 text-amber-300 font-bold">
             <v-icon name="md-star-round" class="w-4 h-4" />
             {{ formatRating(movie.vote_average) }}

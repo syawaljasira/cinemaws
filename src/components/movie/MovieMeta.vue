@@ -28,7 +28,7 @@ const handleCast = (value: string) => {
   <div class="space-y-8">
     <!-- Cast -->
     <div v-if="topCast.length">
-      <h2 class="text-white font-semibold text-lg mb-4">Top Cast</h2>
+      <h2 class="text-gray-700 dark:text-white font-semibold text-lg mb-4">Top Cast</h2>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div
           v-for="actor in topCast"
@@ -47,8 +47,12 @@ const handleCast = (value: string) => {
             />
           </button>
           <div>
-            <p class="text-white text-xs font-medium line-clamp-1">{{ actor.name }}</p>
-            <p class="text-gray-500 text-xs line-clamp-1">{{ actor.character }}</p>
+            <p class="text-gray-700 dark:text-white text-xs font-medium line-clamp-1">
+              {{ actor.name }}
+            </p>
+            <p class="text-gray-500 text-xs line-clamp-1">
+              {{ actor.character }}
+            </p>
           </div>
         </div>
       </div>
