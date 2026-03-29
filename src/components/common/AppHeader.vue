@@ -62,7 +62,7 @@ const navLinks = [
             <!-- Watchlist badge -->
             <span
               v-if="link.to === '/watchlist' && watchlistStore.count > 0"
-              class="absolute -top-1 -right-1 w-4 h-4 bg-primary text-gray-900 text-xs font-bold rounded-full flex items-center justify-center"
+              class="absolute -top-1 -right-1 w-4 h-4 bg-gray-700 dark:bg-primary text-primary-light dark:text-gray-900 text-xs font-bold rounded-full flex items-center justify-center"
             >
               {{ watchlistStore.count > 9 ? "9+" : watchlistStore.count }}
             </span>
@@ -70,9 +70,9 @@ const navLinks = [
         </nav>
 
         <!-- Right actions -->
-        <div class="relative flex items-center gap-4">
+        <div class="relative flex items-center gap-3 md:gap-4">
           <!-- Search bar -->
-          <form @submit.prevent="searchStore.handleSearch" class="relative w-72">
+          <form @submit.prevent="searchStore.handleSearch" class="relative w-72 hidden md:block">
             <div
               class="relative z-50 flex bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-500 border rounded-xl pl-3 pr-3 py-2"
               :class="[
@@ -146,25 +146,11 @@ const navLinks = [
 
           <!-- Mobile menu toggle -->
           <button
-            class="md:hidden p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition"
+            class="md:hidden text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition"
             @click="mobileMenuOpen = !mobileMenuOpen"
           >
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                v-if="!mobileMenuOpen"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-              <path
-                v-else
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+            <v-icon v-if="!mobileMenuOpen" name="hi-solid-menu" class="w-5 h-5" />
+            <v-icon v-else name="md-close-round" class="w-5 h-5" />
           </button>
         </div>
       </div>

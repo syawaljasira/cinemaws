@@ -25,7 +25,7 @@ defineProps<{
         class="w-7 h-7 text-gray-700 dark:text-gray-500"
       />
       <!-- Film icon (default) -->
-      <v-icon v-else name="md-localmovies-round" class="w-7 h-7 text-gray-700 dark:text-gray-500" />
+      <v-icon v-else name="hi-film" class="w-7 h-7 text-gray-700 dark:text-gray-500" />
     </div>
     <div>
       <p class="text-gray-700 dark:text-white font-semibold text-lg">

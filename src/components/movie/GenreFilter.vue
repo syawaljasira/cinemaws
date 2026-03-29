@@ -17,8 +17,8 @@ const emit = defineEmits<{
       class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors cursor-pointer"
       :class="
         selected === null
-          ? 'bg-primary text-gray-900'
-          : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white'
+          ? 'bg-primary-light dark:bg-primary text-gray-900'
+          : 'bg-gray-300 dark:bg-gray-800 text-gray-900 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-800 dark:hover:text-white'
       "
       @click="emit('select', null)"
     >
@@ -30,8 +30,8 @@ const emit = defineEmits<{
       class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors cursor-pointer"
       :class="
         selected === genre.id
-          ? 'bg-primary text-gray-900'
-          : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white'
+          ? 'bg-primary-light dark:bg-primary text-gray-900'
+          : 'bg-gray-300 dark:bg-gray-800 text-gray-900 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-800 dark:hover:text-white'
       "
       @click="emit('select', genre.id)"
     >
