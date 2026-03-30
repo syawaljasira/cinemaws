@@ -92,8 +92,8 @@ src/
 Clone and install:
 
 ```bash
-git clone https://github.com/username/movie-browser-vue.git
-cd movie-browser-vue
+git clone https://github.com/syawaljasira/cinemaws.git
+cd cinemaws
 npm install
 ```
 
