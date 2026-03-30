@@ -1,48 +1,147 @@
-# movie-browser
+# 🎬 Cinemaws - Movie Browser App
 
-This template should help get you started developing with Vue 3 in Vite.
+A simple yet slick movie browser app built with Vue 3 + TypeScript and powered by TMDB API.
+Browse movies, search favorites, and save to watchlist so you never forget what to watch next 🍿
 
-## Recommended IDE Setup
+---
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## ✨ Features
 
-## Recommended Browser Setup
+- 🏠 **Home Page** – Browse **popular movies** from TMDB
+- 🔍 **Search Page** – Find movies by **keyword**
+- 🎥 **Movie Detail Page** – Complete movie info (rating, overview, genre, cast, similar movies)
+- ❤️ **Watchlist Page** – Save and manage your favorite movies
+- 🎭 **Genre Filter** – Filter movies by genre
+- 🌙 **Dark Mode** – Eye-friendly for late-night browsing
+- 💾 **Local Storage Persist** – Watchlist persists across sessions
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+---
 
-## Type Support for `.vue` Imports in TS
+## 🧩 Tech Stack
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- ⚡️ [Vue 3](https://vuejs.org/) + [TypeScript](https://www.typescriptlang.org/)
+- 🎨 [TailwindCSS](https://tailwindcss.com/) – Fast & responsive styling
+- 💾 [Pinia](https://pinia.vuejs.org/) + `pinia-plugin-persistedstate` – state management & persist watchlist
+- 🧠 [VueUse](https://vueuse.org/) – Utility composables
+- 🧭 [Vue Router](https://router.vuejs.org/) – Page navigation
+- 🌐 [Axios](https://axios-http.com/) – TMDB API calls
+- 🔣 [oh-vue-icons](https://oh-vue-icons.netlify.app/) – Beautiful icons
 
-## Customize configuration
+---
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## 📁 Project Structure
 
-## Project Setup
+```bash
+src/
+├── assets/
+│   └── main.css
+├── components/
+│   ├── common/
+│   │   ├── AppHeader.vue
+│   │   ├── AppFooter.vue
+│   │   ├── BaseButton.vue
+│   │   ├── LoadingState.vue
+│   │   ├── ErrorState.vue
+│   │   └── EmptyState.vue
+│   ├── movie/
+│   │   ├── MovieCard.vue
+│   │   ├── MovieGrid.vue
+│   │   ├── MovieHero.vue
+│   │   ├── MovieMeta.vue
+│   │   ├── GenreFilter.vue
+│   │   ├── WatchlistButton.vue
+│   │   ├── MovieSuggestions.vue
+│   │   ├── CastSuggestions.vue
+│   │   └── SimilarMoviesSection.vue
+├── composables/
+│   ├── addIcons.ts
+│   ├── useMovies.ts
+│   ├── useMovieDetail.ts
+│   ├── useSearchMovies.ts
+│   ├── useSearchCast.ts
+│   ├── useGenres.ts
+│   └── useImageUrl.ts
+├── pages/
+│   ├── HomePage.vue
+│   ├── SearchPage.vue
+│   ├── MovieDetailPage.vue
+│   ├── WatchlistPage.vue
+│   └── NotFoundPage.vue
+├── router/
+│   └── index.ts
+├── services/
+│   ├── axios.ts
+│   └── movieService.ts
+├── stores/
+│   ├── watchlist.ts
+│   ├── search.ts
+│   └── theme.ts
+├── types/
+│   └── movie.ts
+├── utils/
+│   ├── formatDate.ts
+│   └── formatRating.ts
+├── App.vue
+└── main.ts
+```
 
-```sh
+---
+
+## 🚀 Quick Start
+
+Clone and install:
+
+```bash
+git clone https://github.com/username/movie-browser-vue.git
+cd movie-browser-vue
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+⚠️ Set TMDB API Key (Required!)
+Create .env file in project root with your TMDB API key:
 
-```sh
+```bash
+VITE_TMDB_API_KEY=your_tmdb_api_key
+```
+
+Get your API key:
+
+1. Sign up at TMDB
+
+2. Go to Settings > API
+
+3. Create new API key (v3 auth)
+
+Run Development Server
+
+```bash
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+Build for Production
 
-```sh
+```bash
 npm run build
+npm run preview
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+---
 
-```sh
-npm run lint
-```
+## 🖼️ Preview
+
+![Home page with popular movies and genre filter](screenshots/home.png)
+
+![Movie detail with cast and similar movies](screenshots/detail.png)
+
+---
+
+## ❤️ Built With Love
+
+Made for fun and learning modern Vue 3.
+If you like this project, feel free to give it a ⭐ on GitHub! 😄[p]
+
+---
+
+## 📜 License
+
+MIT License © 2026 syawaljasira
