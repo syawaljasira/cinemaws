@@ -5,8 +5,7 @@ import { useThemeStore } from "@/stores/theme";
 import { useWatchlistStore } from "@/stores/watchlist";
 import { useSearchStore } from "@/stores/search.ts";
 import CastSuggestions from "../movie/CastSuggestions.vue";
-import logoLight from "@/assets/logo-fullcolor-dark.png";
-import logoDark from "@/assets/logo-fullcolor.png";
+import logo from "@/assets/logo-primary.svg";
 import MovieSuggestions from "../movie/MovieSuggestions.vue";
 
 const route = useRoute();
@@ -18,6 +17,15 @@ const mobileMenuOpen = ref<boolean>(false);
 
 // Sync input → URL query param
 
+const handleSearchMobile = () => {
+  searchStore.handleSearch();
+  mobileMenuOpen.value = false;
+};
+
+const toggleMenuOpen = () => {
+  mobileMenuOpen.value = !mobileMenuOpen.value;
+};
+
 const navLinks = [
   { name: "Home", to: "/" },
   { name: "Watchlist", to: "/watchlist" },
@@ -25,23 +33,20 @@ const navLinks = [
 </script>
 
 <template>
-  <header class="w-full fixed top-4 z-50 px-8">
+  <header class="w-full fixed top-4 z-50 px-4 md:px-8">
     <div
-      class="max-w-7xl mx-auto px-4 lg:px-6"
+      class="max-w-7xl mx-auto px-4 md:px-6"
       :class="[themeStore.isDark ? 'glass-dark' : 'glass-light']"
     >
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <RouterLink
           to="/"
-          class="relative h-full flex items-center gap-2 text-primary font-bold text-xl tracking-tight hover:text-primary-300 transition pr-12"
+          class="relative h-full flex items-center gap-2 text-gray-700 dark:text-primary font-bold text-xl tracking-tight hover:text-primary-300 transition pr-12"
         >
-          <div class="w-auto h-7/12 overflow-hidden">
-            <img
-              :src="themeStore.isDark ? logoDark : logoLight"
-              alt="Cinemaws"
-              class="w-auto h-full object-center"
-            />
+          <div class="w-auto flex items-center gap-1.5 overflow-hidden leading-none">
+            <img :src="logo" alt="Cinemaws" class="w-6 h-6 object-center" />
+            Cinemaws
           </div>
         </RouterLink>
 
@@ -146,7 +151,7 @@ const navLinks = [
 
           <!-- Mobile menu toggle -->
           <button
-            class="md:hidden text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition"
+            class="md:hidden text-gray-700 dark:text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition"
             @click="mobileMenuOpen = !mobileMenuOpen"
           >
             <v-icon v-if="!mobileMenuOpen" name="hi-solid-menu" class="w-5 h-5" />
@@ -165,7 +170,11 @@ const navLinks = [
       leave-from-class="opacity-100 translate-y-0"
       leave-to-class="opacity-0 -translate-y-2"
     >
-      <div v-if="mobileMenuOpen" class="md:hidden border-t border-gray-800 bg-gray-900">
+      <div
+        v-if="mobileMenuOpen"
+        class="md:hidden border-t border-gray-800"
+        :class="[themeStore.isDark ? 'glass-dark' : 'glass-light']"
+      >
         <nav class="px-4 py-3 flex flex-col gap-1">
           <RouterLink
             v-for="link in navLinks"
@@ -174,8 +183,8 @@ const navLinks = [
             class="flex items-center justify-between px-4 py-2.5 text-sm font-medium rounded-lg transition"
             :class="
               route.path === link.to
-                ? 'text-primary bg-primary/10'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                ? 'text-primary-dark dark:text-primary bg-primary/20 dark:bg-primary/10'
+                : 'text-gray-700 dark:text-gray-400'
             "
             @click="mobileMenuOpen = false"
           >
@@ -188,6 +197,73 @@ const navLinks = [
             </span>
           </RouterLink>
         </nav>
+
+        <div>
+          <form
+            @submit.prevent="handleSearchMobile"
+            class="relative w-full block md:hidden px-4 py-3"
+          >
+            <div
+              class="relative z-50 flex bg-gray-100/30 text-gray-800 dark:bg-gray-800 dark:text-gray-500 border rounded-xl pl-3 pr-3 py-2"
+              :class="[
+                searchStore.isFocus
+                  ? 'shadow-lg shadow-primary-light/40 border-primary-dark'
+                  : 'border-gray-400 dark:border-gray-700',
+              ]"
+            >
+              <input
+                class="w-56 text-sm hover:border-primary/50 transition focus:outline-1 focus:outline-none"
+                :class="[searchStore.isFocus ? 'absolute' : 'relative']"
+                type="text"
+                v-model="searchStore.search"
+                placeholder="Search movies..."
+                @focus="searchStore.setFocus(true)"
+              />
+
+              <div class="relative ml-auto h-5">
+                <Transition name="fade1">
+                  <v-icon
+                    v-if="!searchStore.search"
+                    name="md-search-round"
+                    class="w-5 h-5 text-gray-700 dark:text-gray-500"
+                  />
+                </Transition>
+
+                <Transition name="fade2">
+                  <button
+                    v-if="searchStore.search"
+                    @click="searchStore.clear"
+                    type="button"
+                    class="text-gray-700 dark:text-gray-500 hover:text-gray-800 hover:bg-gray-300 dark:hover:text-gray-300 dark:hover:bg-gray-700 rounded-lg transition"
+                  >
+                    <v-icon name="md-close-round" class="w-5 h-5" />
+                  </button>
+                </Transition>
+              </div>
+
+              <div
+                v-if="searchStore.isFocus && searchStore.search"
+                class="absolute top-10 left-0 w-full h-auto flex flex-col gap-1 bg-gray-100 dark:bg-gray-800 rounded-xl shadow-lg shadow-primary-light/40 border border-primary-dark"
+              >
+                <!-- View all -->
+                <button
+                  type="button"
+                  @click="handleSearchMobile"
+                  class="inline-flex items-center gap-1.5 text-base text-gray-700 dark:text-gray-400 font-medium leading-none hover:bg-gray-300 dark:hover:bg-gray-700 p-3 rounded-xl transition"
+                >
+                  <v-icon name="md-search-round" class="w-5 h-5" />
+                  {{ searchStore.search }}
+                </button>
+
+                <!-- Cast Suggestions -->
+                <CastSuggestions :toggleMenuOpen="toggleMenuOpen" />
+
+                <!-- Movie Suggestions -->
+                <MovieSuggestions @toggle-menu-open="toggleMenuOpen" />
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </Transition>
   </header>

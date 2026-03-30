@@ -5,11 +5,14 @@ import { useRouter } from "vue-router";
 import LoadingState from "../common/LoadingState.vue";
 import EmptyState from "../common/EmptyState.vue";
 
+const emit = defineEmits(["toggle-menu-open"]);
+
 const router = useRouter();
 const searchStore = useSearchStore();
 const { getPosterUrl } = useImageUrl();
 
 function handleNavigate(e: MouseEvent, id: string | number) {
+  emit("toggle-menu-open");
   searchStore.setFocus(false);
   router.push({ name: "movie", params: { id } });
 }
