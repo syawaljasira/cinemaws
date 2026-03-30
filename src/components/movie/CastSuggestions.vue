@@ -3,11 +3,14 @@ import { useImageUrl } from "@/composables/useImageUrl.ts";
 import { useSearchStore } from "@/stores/search.ts";
 import { useRouter } from "vue-router";
 
+const emit = defineEmits(["toggle-menu-open"]);
+
 const router = useRouter();
 const searchStore = useSearchStore();
 const { getAvatarUrl } = useImageUrl();
 
 function handleNavigate(cast: string) {
+  emit("toggle-menu-open");
   searchStore.setFocus(false);
   router.push({ name: "search", query: { cast } });
 }

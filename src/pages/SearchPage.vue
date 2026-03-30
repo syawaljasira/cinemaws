@@ -68,8 +68,10 @@ useIntersectionObserver(sentinel, ([entry]) => {
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10 space-y-8">
     <!-- Header -->
     <div class="space-y-1">
-      <h1 class="text-2xl font-bold text-white">Search Movies</h1>
-      <p class="text-gray-500 text-sm">Find any movie from millions in the TMDB database</p>
+      <h1 class="text-2xl font-bold text-gray-700 dark:text-white">Search Movies</h1>
+      <p class="text-gray-600 dark:text-gray-500 text-sm">
+        Find any movie from millions in the TMDB database
+      </p>
     </div>
 
     <div
@@ -83,12 +85,16 @@ useIntersectionObserver(sentinel, ([entry]) => {
           class="w-full h-full object-cover"
         />
       </div>
-      <p class="text-white text-base font-medium line-clamp-1">{{ castDetails.name }}</p>
+      <p class="text-gray-700 dark:text-white text-base font-medium line-clamp-1">
+        {{ castDetails.name }}
+      </p>
     </div>
 
     <!-- Results count -->
     <div v-if="hasSearched && !isLoading && results.length" class="text-gray-500 text-sm">
-      Showing <span class="text-white font-medium">{{ results.length }}</span> results for
+      Showing
+      <span class="text-gray-700 dark:text-white font-medium">{{ results.length }}</span> results
+      for
       <span class="text-primary font-medium">"{{ query }}"</span>
     </div>
 
@@ -96,7 +102,7 @@ useIntersectionObserver(sentinel, ([entry]) => {
     <LoadingState v-if="isLoading && !results.length" message="Searching..." />
 
     <!-- Error -->
-    <div v-else-if="error" class="text-center py-10 text-red-400 text-sm">
+    <div v-else-if="error" class="text-center py-10 text-red-500 dark:text-red-400 text-sm">
       {{ error }}
     </div>
 
